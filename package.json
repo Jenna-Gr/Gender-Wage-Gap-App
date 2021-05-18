@@ -1,0 +1,23 @@
+{
+  "name": "gender-wage-gap-app",
+  "version": "1.0.0",
+  "description": "Utilizing self-reported data, compare average salaries among Software Engineers at top tech companies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jenna-Gr/Gender-Wage-Gap-App.git"
+  },
+  "author": "Jenna Groth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jenna-Gr/Gender-Wage-Gap-App/issues"
+  },
+  "homepage": "https://github.com/Jenna-Gr/Gender-Wage-Gap-App#readme",
+  "dependencies": {
+    "mongoose": "^5.12.9",
+    "puppeteer": "^9.1.1"
+  }
+}

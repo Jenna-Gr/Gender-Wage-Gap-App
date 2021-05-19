@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer');
+const mongoose = require('mongoose');
+const schema = require('./schema.js');
 
 async function run(company, gender) {
   const browser = await puppeteer.launch({
@@ -33,7 +35,7 @@ async function run(company, gender) {
 
 
   for (let h = 1; h <= numPages -1; h++) {
-    console.log(`Page ${h} of ${numPages}`);
+    // console.log(`Page ${h} of ${numPages}`);
     for (let i = 1; i <= 10; i++) {
       // change the index to the next child
       let locationSelector = LIST_LOCATION_SELECTOR.replace("INDEX", i);
@@ -53,17 +55,26 @@ async function run(company, gender) {
       }, yoeSelector);
 
       let compensation = await page.evaluate((sel) => {
-        let element = document.querySelector(sel);
-        return element.innerText;
+        let element = document.querySelector(sel).innerText;
+        var num = element.slice(1);
+        return parseInt(num.replace(',', ''));
       }, compensationSelector);
 
-      console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: ${compensation}`);
+      console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: $${compensation}`);
+
+      schema.upsertUser({
+        company: company,
+        gender: gender,
+        location: location,
+        yoe: ParseInt(yoe),
+        compensation: compensation
+      });
 
     }
     await page.click(NEXT_PAGE_SELECTOR);
     await page.waitForTimeout(2000);
   }
-  console.log(`Page ${numPages} of ${numPages}`);
+  // console.log(`Page ${numPages} of ${numPages}`);
   for (let i = 1; i <= numLeftUsers; i++) {
     // change the index to the next child
     let locationSelector = LIST_LOCATION_SELECTOR.replace("INDEX", i);
@@ -83,11 +94,20 @@ async function run(company, gender) {
     }, yoeSelector);
 
     let compensation = await page.evaluate((sel) => {
-      let element = document.querySelector(sel);
-      return element.innerText;
+      let element = document.querySelector(sel).innerText;
+      var num = element.slice(1);
+      return parseInt(num.replace(',', ''));
     }, compensationSelector);
 
-    console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: ${compensation}`);
+    console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: $${compensation}`);
+
+    schema.upsertUser({
+        company: company,
+        gender: gender,
+        location: location,
+        yoe: ParseInt(yoe),
+        compensation: compensation
+      });
   }
 
   browser.close();
@@ -103,7 +123,6 @@ async function getNumUsers(page) {
 
   const numRows = parseInt(inner);
 
-  console.log('\n\nnumRows:', numRows);
   return numRows;
 }
 

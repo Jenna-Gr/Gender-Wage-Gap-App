@@ -107,12 +107,17 @@ async function getNumUsers(page) {
   return numRows;
 }
 
-const companies = ['Google', 'Amazon', 'Facebook', 'Apple', 'Microsoft', 'VMware', 'IBM', 'Tesla', 'Spotify', 'Adobe'];
+const companiesArr = ['Google', 'Amazon', 'Facebook', 'Apple', 'Microsoft', 'VMware', 'IBM', 'Tesla', 'Spotify', 'Adobe'];
+const gendersArr = ['female', 'male', 'other'];
 
-// const generateDataFemale = (companies) => {
-//   for (var j = 0; j < companies.length; j++) {
+async function generateData(companies, genders) {
+  for (var j = 0; j < companies.length; j++) {
+    for (var k = 0; k < genders.length; k++) {
+      await run(companies[j], genders[k]);
+    }
+  }
+};
 
-//   }
-// };
+generateData(companiesArr, gendersArr);
 
-run(companies[5], 'female');
+// run(companiesArr[5], gendersArr[0]);

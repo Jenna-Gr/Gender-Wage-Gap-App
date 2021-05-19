@@ -25,7 +25,7 @@ let userSchema = new Schema({
 let User = mongoose.model('User', userSchema);
 
 function upsertUser(userObj) {
-  User.save(userObj, (err, result) => {
+  User.create(userObj, (err, result) => {
     if (err) {
       throw err;
     } else {

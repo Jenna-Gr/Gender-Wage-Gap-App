@@ -30,13 +30,55 @@ async function run(company, gender) {
   const LIST_COMPENSATION_SELECTOR = '#compTable > tbody > tr:nth-child(INDEX) > td.text-right.otherWidth > div > div > span';
 
   const numUsers = await getNumUsers(page);
-  const numLeftUsers = numUsers % 10;
+  const numLeftUsers = numUsers <= 10 ? numUsers : numUsers % 10;
   const numPages = Math.ceil(numUsers / 10);
+  // console.log('numUsers:', numUsers);
+  // console.log('numLeftUsers:', numLeftUsers);
+  // console.log('numPages:', numPages);
 
+  if (numPages > 1) {
+    for (let h = 1; h <= numPages -1; h++) {
+      // console.log(`Page ${h} of ${numPages}`);
+      for (let i = 1; i <= 10; i++) {
+        // change the index to the next child
+        let locationSelector = LIST_LOCATION_SELECTOR.replace("INDEX", i);
+        let yoeSelector = LIST_YOE_SELECTOR.replace("INDEX", i);
+        let compensationSelector = LIST_COMPENSATION_SELECTOR.replace("INDEX", i);
 
-  for (let h = 1; h <= numPages -1; h++) {
-    // console.log(`Page ${h} of ${numPages}`);
-    for (let i = 1; i <= 10; i++) {
+        let location = await page.evaluate((sel) => {
+          let element = document.querySelector(sel).innerHTML;
+          let cutBefore = element.indexOf('|') -1;
+          return element.slice(0, cutBefore);
+        }, locationSelector);
+
+        let yoe = await page.evaluate((sel) => {
+          let element = document.querySelector(sel).innerHTML;
+          let cutAfter = element.indexOf('/') + 2;
+          return element.slice(cutAfter);
+        }, yoeSelector);
+
+        let compensation = await page.evaluate((sel) => {
+          let element = document.querySelector(sel).innerText;
+          var num = element.slice(1);
+          return parseInt(num.replace(',', ''));
+        }, compensationSelector);
+
+        console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: $${compensation}`);
+
+        schema.upsertUser({
+          company: company,
+          gender: gender,
+          location: location,
+          yoe: parseInt(yoe),
+          compensation: compensation
+        });
+
+      }
+      await page.click(NEXT_PAGE_SELECTOR);
+      await page.waitForTimeout(2000);
+    }
+    // console.log(`Page ${numPages} of ${numPages}`);
+    for (let i = 1; i <= numLeftUsers; i++) {
       // change the index to the next child
       let locationSelector = LIST_LOCATION_SELECTOR.replace("INDEX", i);
       let yoeSelector = LIST_YOE_SELECTOR.replace("INDEX", i);
@@ -63,51 +105,49 @@ async function run(company, gender) {
       console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: $${compensation}`);
 
       schema.upsertUser({
-        company: company,
-        gender: gender,
-        location: location,
-        yoe: parseInt(yoe),
-        compensation: compensation
-      });
-
+          company: company,
+          gender: gender,
+          location: location,
+          yoe: parseInt(yoe),
+          compensation: compensation
+        });
     }
-    await page.click(NEXT_PAGE_SELECTOR);
-    await page.waitForTimeout(2000);
-  }
-  // console.log(`Page ${numPages} of ${numPages}`);
-  for (let i = 1; i <= numLeftUsers; i++) {
-    // change the index to the next child
-    let locationSelector = LIST_LOCATION_SELECTOR.replace("INDEX", i);
-    let yoeSelector = LIST_YOE_SELECTOR.replace("INDEX", i);
-    let compensationSelector = LIST_COMPENSATION_SELECTOR.replace("INDEX", i);
 
-    let location = await page.evaluate((sel) => {
-      let element = document.querySelector(sel).innerHTML;
-      let cutBefore = element.indexOf('|') -1;
-      return element.slice(0, cutBefore);
-    }, locationSelector);
+  } else {
+    for (let i = 1; i <= numLeftUsers; i++) {
+      // change the index to the next child
+      let locationSelector = LIST_LOCATION_SELECTOR.replace("INDEX", i);
+      let yoeSelector = LIST_YOE_SELECTOR.replace("INDEX", i);
+      let compensationSelector = LIST_COMPENSATION_SELECTOR.replace("INDEX", i);
 
-    let yoe = await page.evaluate((sel) => {
-      let element = document.querySelector(sel).innerHTML;
-      let cutAfter = element.indexOf('/') + 2;
-      return element.slice(cutAfter);
-    }, yoeSelector);
+      let location = await page.evaluate((sel) => {
+        let element = document.querySelector(sel).innerHTML;
+        let cutBefore = element.indexOf('|') -1;
+        return element.slice(0, cutBefore);
+      }, locationSelector);
 
-    let compensation = await page.evaluate((sel) => {
-      let element = document.querySelector(sel).innerText;
-      var num = element.slice(1);
-      return parseInt(num.replace(',', ''));
-    }, compensationSelector);
+      let yoe = await page.evaluate((sel) => {
+        let element = document.querySelector(sel).innerHTML;
+        let cutAfter = element.indexOf('/') + 2;
+        return element.slice(cutAfter);
+      }, yoeSelector);
 
-    console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: $${compensation}`);
+      let compensation = await page.evaluate((sel) => {
+        let element = document.querySelector(sel).innerText;
+        var num = element.slice(1);
+        return parseInt(num.replace(',', ''));
+      }, compensationSelector);
 
-    schema.upsertUser({
-        company: company,
-        gender: gender,
-        location: location,
-        yoe: parseInt(yoe),
-        compensation: compensation
-      });
+      console.log(`Company: ${company}, Gender: ${gender}, Location: ${location}, Years of Experience: ${yoe}, Compensation: $${compensation}`);
+
+      schema.upsertUser({
+          company: company,
+          gender: gender,
+          location: location,
+          yoe: parseInt(yoe),
+          compensation: compensation
+        });
+    }
   }
 
   browser.close();
@@ -118,8 +158,13 @@ async function getNumUsers(page) {
     let html = document.getElementsByClassName("pagination-info")[0].innerText;
 
     // format is: "Showing 1 to 10 of 34 rows"
-    return html.slice(19).replace(' rows', '').trim();
+    if (html.length <= 24) {
+      return html.slice(17).replace(' rows', '').trim();
+    } else {
+      return html.slice(19).replace(' rows', '').trim();
+    }
   });
+  // console.log('inner:', inner);
 
   const numRows = parseInt(inner);
 
@@ -137,6 +182,6 @@ async function generateData(companies, genders) {
   }
 };
 
-// generateData(companiesArr, gendersArr);
+generateData(companiesArr, gendersArr);
 
-run('Dell', 'male');
+// run('Dell', 'male');

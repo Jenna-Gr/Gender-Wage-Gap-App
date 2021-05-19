@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // connect to mongoose
 mongoose.connect('mongodb://localhost/compensation', { useNewUrlParser: true });
-const connection = mongoose.connection;
+const db = mongoose.connection;
 
 // verify connection
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -18,7 +18,7 @@ let userSchema = new Schema({
   gender: String,
   location: String,
   yoe: Number,
-  compensation: String
+  compensation: Number
 });
 
 // create a model
@@ -28,6 +28,8 @@ function upsertUser(userObj) {
   User.save(userObj, (err, result) => {
     if (err) {
       throw err;
+    } else {
+      console.log('Succesffully added to db!');
     }
   });
 }
@@ -39,8 +41,11 @@ const getUsers = (body, cb) => {
    } else {
      cb(null, user);
    }
-  )
+  });
 };
 
 
-module.exports = {User, getUsers, upsertUser};
+module.exports = {
+  getUsers: getUsers,
+  upsertUser: upsertUser
+};

@@ -66,7 +66,7 @@ async function run(company, gender) {
         company: company,
         gender: gender,
         location: location,
-        yoe: ParseInt(yoe),
+        yoe: parseInt(yoe),
         compensation: compensation
       });
 
@@ -105,7 +105,7 @@ async function run(company, gender) {
         company: company,
         gender: gender,
         location: location,
-        yoe: ParseInt(yoe),
+        yoe: parseInt(yoe),
         compensation: compensation
       });
   }
@@ -137,6 +137,6 @@ async function generateData(companies, genders) {
   }
 };
 
-generateData(companiesArr, gendersArr);
+// generateData(companiesArr, gendersArr);
 
-// run(companiesArr[5], gendersArr[0]);
+run('Dell', 'male');

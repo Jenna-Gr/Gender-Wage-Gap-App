@@ -4,7 +4,7 @@ const queries = require('../database/schema.js');
 const cors = require('cors');
 
 // serve static files from dist dir
-app.use(express.static(__dirname + '/../dist'));
+app.use(express.static(__dirname + '/../client/dist'));
 
 // middleware
 // use express.json for parsing JSON
@@ -13,15 +13,15 @@ app.use(express.json());
 app.use(cors());
 
 // get requests
-app.get('/compensation', (req, res) => {
- queries.getUsers(req.query.body, (err, data) => {
-   if (err) {
-     res.status(404).send(err);
-    } else {
-      res.send(data);
-    }
-  })
-});
+// app.get('/compensation', (req, res) => {
+//  queries.getUsers(req.query.body, (err, data) => {
+//    if (err) {
+//      res.status(404).send(err);
+//     } else {
+//       res.send(data);
+//     }
+//   })
+// });
 
 // set port where server will listen
 const port = 3000;

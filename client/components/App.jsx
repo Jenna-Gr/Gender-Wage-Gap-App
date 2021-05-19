@@ -1,7 +1,16 @@
 import React from 'react';
 
-const App = () => (
- <h1>GENDER WAGE GAP APP!</h1>
-);
+class App extends React.Component {
+  constructor() {
+    super();
+  }
+  render () {
+    return (
+      <div>
+        <h1>GENDER WAGE GAP APP!</h1>
+      </div>
+    )
+  }
+  };
 
 export default App;

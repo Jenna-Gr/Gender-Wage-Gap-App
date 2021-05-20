@@ -14,8 +14,12 @@ app.use(cors());
 
 // get requests
 app.get('/api/compensation', (req, res) => {
-  if (req.body.experienceLevel === 'newGrad') {
-    queries.getNewGrads(req.body.company, req.body.gender, (err, data) => {
+  // console.log(req.query);
+  // console.log(req.query.company);
+  // console.log(req.query.gender);
+  // console.log(req.query.experienceLevel);
+  if (req.query.experienceLevel === 'newGrad') {
+    queries.getNewGrads(req.query.company, req.query.gender, (err, data) => {
       if (err) {
         res.status(404).send(err);
        } else {
@@ -29,8 +33,8 @@ app.get('/api/compensation', (req, res) => {
          res.send({averageSalary: avg});
        }
     })
-  } else if (req.body.experienceLevel === 'midLevel') {
-    queries.getMids(req.body.company, req.body.gender, (err, data) => {
+  } else if (req.query.experienceLevel === 'midLevel') {
+    queries.getMids(req.query.company, req.query.gender, (err, data) => {
       if (err) {
         res.status(404).send(err);
        } else {
@@ -45,7 +49,7 @@ app.get('/api/compensation', (req, res) => {
        }
     })
   } else {
-    queries.getExperts(req.body.company, req.body.gender, (err, data) => {
+    queries.getExperts(req.query.company, req.query.gender, (err, data) => {
       if (err) {
         res.status(404).send(err);
        } else {

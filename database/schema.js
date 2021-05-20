@@ -34,8 +34,38 @@ function upsertUser(userObj) {
   });
 }
 
-const getUsers = (body, cb) => {
-  User.findOne({ company: body.company, gender: body.gender, yoe: body.yoe}, (error, user) => {
+const getAllAvg = (cb) => {
+  User.aggregate([{$group: {_id:{company:"$company", gender:"$gender"}, avgSalary: {$avg: "$compensation"}}}], (error, user) => {
+   if (error) {
+     cb(error, null);
+   } else {
+     cb(null, user);
+   }
+  });
+};
+
+const getNewGrads = (company, gender, cb) => {
+  User.find({company: company, gender: gender, yoe: { $lt: 2 }}, (error, user) => {
+   if (error) {
+     cb(error, null);
+   } else {
+     cb(null, user);
+   }
+  });
+};
+
+const getMids = (company, gender, cb) => {
+  User.find({company: company, gender: gender, yoe: { $gte: 2, $lt: 5 }}, (error, user) => {
+   if (error) {
+     cb(error, null);
+   } else {
+     cb(null, user);
+   }
+  });
+};
+
+const getExperts = (company, gender, cb) => {
+  User.find({company: company, gender: gender, yoe: { $gte: 5 }}, (error, user) => {
    if (error) {
      cb(error, null);
    } else {
@@ -46,6 +76,11 @@ const getUsers = (body, cb) => {
 
 
 module.exports = {
-  getUsers: getUsers,
-  upsertUser: upsertUser
+  upsertUser: upsertUser,
+  getAllAvg: getAllAvg,
+  getNewGrads: getNewGrads,
+  getMids: getMids,
+  getExperts: getExperts
 };
+
+// db.users.aggregate({$group: {_id:{company:"$company", gender:"$gender"}, avgSalary: {$avg: "$compensation"}}})

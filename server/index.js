@@ -13,15 +13,47 @@ app.use(express.json());
 app.use(cors());
 
 // get requests
-// app.get('/compensation', (req, res) => {
-//  queries.getUsers(req.query.body, (err, data) => {
-//    if (err) {
-//      res.status(404).send(err);
-//     } else {
-//       res.send(data);
-//     }
-//   })
-// });
+app.get('/api/compensation', (req, res) => {
+  if (req.body.experienceLevel === 'newGrad') {
+    queries.getNewGrads(req.body.company, req.body.gender, (err, data) => {
+      if (err) {
+        res.status(404).send(err);
+       } else {
+         console.log(data);
+         res.send(data);
+       }
+    })
+  } else if (req.body.experienceLevel === 'midLevel') {
+    queries.getMids(req.body.company, req.body.gender, (err, data) => {
+      if (err) {
+        res.status(404).send(err);
+       } else {
+         console.log(data);
+         res.send(data);
+       }
+    })
+  } else {
+    queries.getExperts(req.body.company, req.body.gender, (err, data) => {
+      if (err) {
+        res.status(404).send(err);
+       } else {
+         console.log(data);
+         res.send(data);
+       }
+    })
+  }
+});
+
+app.get('/api/average', (req, res) => {
+  queries.getAllAvg((err, data) => {
+    if (err) {
+      res.status(404).send(err);
+    } else {
+      console.log(data);
+      res.send(data);
+    }
+  })
+});
 
 // set port where server will listen
 const port = 3000;

@@ -28,6 +28,12 @@ module.exports = {
        test: /\.css$./i,
        exclude: /\.module\.css$/i,
        use: ['style-loader', 'css-loader'],
+     },
+     {
+       test: /.(png|jpeg|gif|svg)$/i,
+       use: [{
+         loader: 'file-loader'
+       }]
      }
    ]
  }

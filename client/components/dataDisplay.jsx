@@ -1,5 +1,14 @@
-
 import React from 'react';
+// import AdobeLogo from '../dist/logos/adobe.png';
+// import AmazonLogo from '../dist/logos/amazon.jpeg';
+// import AppleLogo from '../dist/logos/apple.png';
+// import FacebookLogo from '../dist/logos/facebook.png';
+// import GoogleLogo from '../dist/logos/google.png';
+// import IBMLogo from '../dist/logos/ibm.png';
+// import MicrosoftLogo from '../dist/logos/microsoft.jpeg';
+// import SpotifyLogo from '../dist/logos/spotify.png';
+// import TeslaLogo from '../dist/logos/tesla.png';
+// import VMwareLogo from '../dist/logos/vmware.jpeg';
 
 
 var DataDisplay = (props) => {

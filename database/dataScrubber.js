@@ -184,4 +184,4 @@ async function generateData(companies, genders) {
 
 generateData(companiesArr, gendersArr);
 
-// run('Dell', 'male');
+// run('Dell', 'female');

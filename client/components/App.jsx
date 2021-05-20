@@ -1,16 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import DataDisplay from './dataDisplay.jsx';
-// import AdobeLogo from '../dist/logos/adobe.png';
-// import AmazonLogo from '../dist/logos/amazon.jpeg';
-// import AppleLogo from '../dist/logos/apple.png';
-// import FacebookLogo from '../dist/logos/facebook.png';
-// import GoogleLogo from '../dist/logos/google.png';
-// import IBMLogo from '../dist/logos/ibm.png';
-// import MicrosoftLogo from '../dist/logos/microsoft.jpeg';
-// import SpotifyLogo from '../dist/logos/spotify.png';
-// import TeslaLogo from '../dist/logos/tesla.png';
-// import VMwareLogo from '../dist/logos/vmware.jpeg';
 
 
 class App extends React.Component {
@@ -142,7 +132,6 @@ class App extends React.Component {
         <button onClick={this.handleExpClick}>Senior</button>
 
         <DataDisplay company={this.state.selectedCompany} experience={this.state.selectedExp} female={this.state.selectedCompFem} male={this.state.selectedCompanyMa} other={this.state.selectedCompanyOth} />
-
 
       </div>
     )

@@ -35,6 +35,7 @@ function upsertUser(userObj) {
 }
 
 const getAllAvg = (cb) => {
+  console.log('made it here');
   User.aggregate([{$group: {_id:{company:"$company", gender:"$gender"}, avgSalary: {$avg: "$compensation"}}}], (error, user) => {
    if (error) {
      cb(error, null);

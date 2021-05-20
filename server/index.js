@@ -19,8 +19,14 @@ app.get('/api/compensation', (req, res) => {
       if (err) {
         res.status(404).send(err);
        } else {
+        var sum = 0;
+         var avg = 0;
+         for (var i = 0; i < data.length; i++) {
+           sum += data[i].compensation;
+         }
+         avg = parseInt(sum / data.length);
          console.log(data);
-         res.send(data);
+         res.send({averageSalary: avg});
        }
     })
   } else if (req.body.experienceLevel === 'midLevel') {
@@ -28,8 +34,14 @@ app.get('/api/compensation', (req, res) => {
       if (err) {
         res.status(404).send(err);
        } else {
+         var sum = 0;
+         var avg = 0;
+         for (var i = 0; i < data.length; i++) {
+           sum += data[i].compensation;
+         }
+         avg = parseInt(sum / data.length);
          console.log(data);
-         res.send(data);
+         res.send({averageSalary: avg});
        }
     })
   } else {
@@ -37,8 +49,14 @@ app.get('/api/compensation', (req, res) => {
       if (err) {
         res.status(404).send(err);
        } else {
+        var sum = 0;
+         var avg = 0;
+         for (var i = 0; i < data.length; i++) {
+           sum += data[i].compensation;
+         }
+         avg = parseInt(sum / data.length);
          console.log(data);
-         res.send(data);
+         res.send({averageSalary: avg});
        }
     })
   }

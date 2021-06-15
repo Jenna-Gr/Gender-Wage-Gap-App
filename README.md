@@ -7,25 +7,25 @@
   > Utilizing self-reported data, compare average salaries among SEs with similar experience levels.
 
 ## Installation ##
- > Fork and clone the repository
- > Navigate to the repository in your terminal
+ 1. Fork and clone the repository
+ 1. Navigate to the repository in your terminal
 
-    npm install
+        npm install
   
- > To initialize the database:
-    * Access Mongo Shell
+ 1. To initialize the database:
+     * Access Mongo Shell, then
     
-    use compensation
+           use compensation
  
-   * In regular terminal:
+     * In regular terminal:
     
-    cd database
-    node dataScrubber.js
+           cd database
+           node dataScrubber.js
     
     
- > To start the app:
+ 1. To start the app:
   
-    npm run build
-    npm run start
+        npm run build
+        npm run start
   
- > Navigate to localhost 3000 on your web browser.
+ 1. Navigate to localhost 3000 on your web browser.

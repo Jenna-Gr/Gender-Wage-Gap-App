@@ -6,6 +6,12 @@
 ## Summary ##
   > Utilizing self-reported data, compare average salaries among SEs with similar experience levels.
 
+## Technologies Utilized ##
+  * Puppeteer for data scrubbing, MongoDb and Mongoose for database
+  * Express server
+  * React Front End
+  * Node.js, Webpack, Babel
+
 ## Installation ##
  1. Fork and clone the repository
  1. Navigate to the repository in your terminal
